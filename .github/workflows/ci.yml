@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and Push
+    name: Build and Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,12 +20,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup node | ${{ matrix.node }}
+      - name: Remove pre-installed Node
+        run: sudo rm -rf /opt/hostedtoolcache/node
+
+      - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: 'yarn'
-      - run: yarn
-      - run: yarn run test
 
-          
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run tests
+        run: yarn run test
