@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 COPY . .
 
-RUN yarn install --production
+RUN yarn install
 RUN yarn run build
 
 FROM node:18-alpine3.19
