@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-  
+
 permissions:
   id-token: write
   contents: read
@@ -16,19 +16,17 @@ jobs:
   build:
     name: Build and Push
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node: [18, 20]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'yarn'
+
       - run: yarn
       - run: yarn run test
 
@@ -48,8 +46,15 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      
+      - name: Build Docker image
+        run: |
+          docker build -t 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }} .
+          docker tag 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }} 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:latest
 
+      - name: Push Docker image
+        run: |
+          docker push 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }}
+          docker push 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:latest
 
 
 
