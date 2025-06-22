@@ -46,15 +46,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker image
-        run: |
-          docker build -t 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }} .
-          docker tag 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }} 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:latest
-
-      - name: Push Docker image
-        run: |
-          docker push 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:${{ steps.tag.outputs.sha }}
-          docker push 790856957430.dkr.ecr.us-east-2.amazonaws.com/rocketseat-ci-api:latest
 
 
 
